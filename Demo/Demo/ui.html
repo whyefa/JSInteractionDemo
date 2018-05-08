@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                    <title>UIWebView 交互</title>
+                    <script>
+                        function iframe(){
+                            var iFrame;
+                            iFrame = document.createElement("iframe");
+                            iFrame.setAttribute("src", "load");
+                            iFrame.setAttribute("style", "display:none;");
+                            iFrame.setAttribute("height", "0px");
+                            iFrame.setAttribute("width", "0px");
+                            iFrame.setAttribute("frameborder", "0");
+                            document.body.appendChild(iFrame);
+                            // 发起请求后这个 iFrame 就没用了，所以把它从 dom 上移除掉
+                            iFrame.parentNode.removeChild(iFrame);
+                            iFrame = null;
+                        }
+                    
+                    function callNative() {
+                        sendCommand('setData', 'a');
+                    }
+                    
+                    function sendCommand(cmd, args) {
+<!--                        var url = "iosapp:" + cmd + ":" + args;-->
+                        var url = "https://www.baidu.com";
+                        document.location = url;
+                    }
+                    
+                    function callNative1(){
+                        login()
+                    }
+                    
+                    function callNative2() {
+                        native.share()
+                    }
+                    
+                    function callNative3() {
+                        native.shareWeb({url: 'https://www.qq.com', title: '腾讯首页'}, 'wx')
+                    }
+                    
+                    function callNative4() {
+                        native.shareImagePlatform({url:'https:www.a.jpg', title: 'aaa'}, 'wx')
+                    }
+                    
+                    function alertText(text) {
+                        alert(text)
+                    }
+                    
+                    
+                        </script>
+                    <style>
+                        button {
+                            width: 200px;
+                            height: 44px;
+                            color:orangered;
+                            margin-bottom: 20px;
+                        }
+                    div {
+                        text-align: center;
+                        background: white;
+                        width: 100%;
+                        height: 100%;
+                    }
+                    </style>
+    </head>
+    <body>
+        <div>
+            <button onclick="iframe()" style="margin-top:40px">通过 iFrame 交互</button>
+            <br>
+            <button onclick="callNative()">通过修改 location交互</button>
+            <br>
+            <button onclick="callNative1()">通过JSContext交互</button>
+            <br>
+            <button onclick="callNative2()">通过JSExport交互</button>
+            <br>
+            <button onclick="callNative3()">通过JSExport 多参数 交互</button>
+            <br>
+            <button onclick="callNative4()">通过JSExport 多参数 交互 2</button>
+        </div>
+        
+    </body>
+</html>

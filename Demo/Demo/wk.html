@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WKWebView 交互</title>
+    <script>
+        function callNative() {
+            window.webkit.messageHandlers.goBack.postMessage({})
+        }
+
+        function callNative1() {
+            window.webkit.messageHandlers.share.postMessage({url:'https://www.qq.com', title:'腾讯首页'})
+        }
+
+        function alertText(text) {
+            alert('WKWebView 网页中的 JS alert 有专门的代理方法响应')
+        }
+    </script>
+
+    <style>
+        body {
+            text-align: center;
+        }
+
+        button {
+            width: 80%;
+            height: 44px;
+            margin-bottom: 20px;
+            color: red;
+
+
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <button onclick="callNative()">调用 原生 无参数方法</button>
+    <br>
+    <button onclick="callNative1()">调用 原生 有参数 方法</button>
+    <br>
+   
+</body>
+</html>
