@@ -13,26 +13,29 @@ import JavaScriptCore
 
 class WKWebController: UIViewController, WKScriptMessageHandler, WKNavigationDelegate, WKUIDelegate {
 
+    lazy var userContentController: WKUserContentController = {
+        let contentController = WKUserContentController()
+        return contentController
+    }()
+    
     lazy var web: WKWebView = {
         let preferences = WKPreferences()
         preferences.minimumFontSize = 12
         preferences.javaScriptEnabled = true
         preferences.javaScriptCanOpenWindowsAutomatically = true  // window.open()
-        
-        let userContentController = WKUserContentController()
-        userContentController.add(self, name: "share")
-        userContentController.add(self, name: "goBack")
-        
+//
+        weak var weakSelf = self
+
         let config = WKWebViewConfiguration()
         config.processPool = WKProcessPool()
         config.preferences = preferences
         config.userContentController = userContentController
         
         let webview = WKWebView(frame: view.bounds, configuration: config)
-        webview.uiDelegate = self
+        webview.uiDelegate = weakSelf
 //        webview.navigationDelegate = self
-        webview.addObserver(self, forKeyPath: "title", options: .new, context: nil)
-        webview.addObserver(self, forKeyPath: "estimatedProgress", options: .new, context: nil)
+        webview.addObserver(weakSelf!, forKeyPath: "title", options: .new, context: nil)
+        webview.addObserver(weakSelf!, forKeyPath: "estimatedProgress", options: .new, context: nil)
         return webview
     }()
     
@@ -47,12 +50,22 @@ class WKWebController: UIViewController, WKScriptMessageHandler, WKNavigationDel
         return item
     }()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        userContentController.add(self, name: "share")
+        userContentController.add(self, name: "goBack")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        userContentController.removeScriptMessageHandler(forName: "share")
+        userContentController.removeScriptMessageHandler(forName: "goBack")
+    }
     
     deinit {
-        web.removeObserver(self, forKeyPath: "title")
-        web.removeObserver(self, forKeyPath: "estimatedProgress")
+        self.web.removeObserver(self, forKeyPath: "title")
+        self.web.removeObserver(self, forKeyPath: "estimatedProgress")
         print("WKWebController deinit")
-        
     }
     
     override func viewDidLoad() {
@@ -127,8 +140,9 @@ class WKWebController: UIViewController, WKScriptMessageHandler, WKNavigationDel
             print(web.estimatedProgress)
             progress.setProgress(Float(web.estimatedProgress), animated: true)
             if web.estimatedProgress == 1.0 {
+                weak var weakSelf = self
                 UIView.animate(withDuration: 0.3, delay: 0.5, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                   self.progress.alpha = 0
+                    weakSelf?.progress.alpha = 0
                 }, completion: nil)
             }
         }

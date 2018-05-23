@@ -23,7 +23,7 @@
 
 #pragma mark - LifeCycle
 - (void)dealloc {
-    
+    NSLog(@"UIWebController dealloc");
 }
 
 - (void)viewDidLoad{
@@ -46,16 +46,16 @@
 
 #pragma mark - webview Delegate
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
+    
     self.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     self.jsContext = [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
-    
     __weak UIWebController *weakSelf = self;
+    
     self.jsContext[@"login"] = ^(){
         [weakSelf login];
     };
     
     self.jsContext[@"native"] = [[JSObject alloc] init];
-    
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
