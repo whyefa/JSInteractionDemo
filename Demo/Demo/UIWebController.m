@@ -63,7 +63,7 @@
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    NSLog(@"请求地址 : %@",request.URL.absoluteString);
+    NSLog(@"请求地址 : %@",[[request URL] scheme]);
     NSString *requestString = request.URL.absoluteString;
     
     //  iframe

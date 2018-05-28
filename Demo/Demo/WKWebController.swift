@@ -41,7 +41,7 @@ class WKWebController: UIViewController, WKScriptMessageHandler, WKNavigationDel
     
     lazy var progress: UIProgressView = {
         let p = UIProgressView(frame: CGRect(x: 0, y: topBarHeight(), width: view.frame.size.width, height: 5))
-        p.progressTintColor = UIColor.blue
+        p.progressTintColor = UIColor.orange
         return p
     }()
     
