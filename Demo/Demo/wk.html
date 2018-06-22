@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,10 @@
         }
 
         function callNative1() {
-            window.webkit.messageHandlers.share.postMessage({url:'https://www.qq.com', title:'腾讯首页'})
+            window.webkit.messageHandlers.share.postMessage({
+                url: 'https://www.qq.com',
+                title: '腾讯首页'
+            })
         }
 
         function alertText(text) {
@@ -34,12 +38,14 @@
         }
     </style>
 </head>
+
 <body>
     <br>
     <button onclick="callNative()">调用 原生 无参数方法</button>
     <br>
     <button onclick="callNative1()">调用 原生 有参数 方法</button>
     <br>
-   
+
 </body>
+
 </html>
